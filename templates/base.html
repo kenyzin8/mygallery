@@ -1,0 +1,93 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+
+    <link rel="icon" type="image/x-icon" href="{% static 'images/fav.png' %}"/>
+
+    <script src="{% static 'plugins/feather/js/feather.min.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'plugins/daisyui/css/daisy.min.css' %}">
+    <script src="{% static 'plugins/daisyui/js/daisy.min.js' %}"></script>
+    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'plugins/masonry/masonry.js' %}"></script>
+
+    <script>
+        function showError(message){
+            var errorModal = document.getElementById('error-modal')
+            errorModal.querySelector('.modal-body').textContent = message
+            errorModal.showModal()
+        }
+        function showSuccess(message){
+            var successModal = document.getElementById('success-modal')
+            successModal.querySelector('.modal-body').textContent = message
+            successModal.showModal()
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1D232A; 
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #4e4e4e; 
+            border-radius: 1px;
+            padding: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4e4e4e; 
+            border-radius: 5px;
+        }
+    </style>
+    {% block styles %}
+    {% endblock %}
+</head>
+<body>
+    <main class="m-5">
+        <div class="mockup-browser bg-base-300">
+            <div class="mockup-browser-toolbar">
+                <div class="input">{{ request.get_full_path }}</div>
+            </div>
+            <div class="px-4 pb-16 bg-base-200">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+
+    </main>
+
+    <dialog id="error-modal" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Oops, there was an error...</h3>
+            <p class="py-4 modal-body"></p>
+            <div class="modal-action">
+            <form method="dialog">
+                <button class="btn">OK</button>
+            </form>
+            </div>
+        </div>
+    </dialog>
+    <dialog id="success-modal" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Success!</h3>
+            <p class="py-4 modal-body"></p>
+            <div class="modal-action">
+            <form method="dialog">
+                <button class="btn">OK</button>
+            </form>
+            </div>
+        </div>
+    </dialog>
+    {% block scripts %}{% endblock %}
+    <script>
+      feather.replace();
+    </script> 
+</body>
+</html>
