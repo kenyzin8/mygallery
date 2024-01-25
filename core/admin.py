@@ -9,7 +9,7 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ['name', 'description']
 
 class ImageAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'image', 'uploaded_at', 'description', 'is_active', 'category']
+    list_display = ['id', 'title', 'image', 'thumbnail', 'uploaded_at', 'description', 'is_active', 'category']
     list_editable = ['is_active', 'image', 'category']
     list_filter = ['is_active', 'category']
     search_fields = ['title', 'description']
