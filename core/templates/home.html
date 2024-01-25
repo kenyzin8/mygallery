@@ -166,6 +166,7 @@
 {% block scripts %}
 <script>
     var ids = {{ image_ids | safe }};
+    var previewImageUrl = "{% url 'get-image-preview' %}";
 </script>
 <script src="{% static 'js/home.js' %}"></script>
 {% endblock %}

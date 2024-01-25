@@ -13,7 +13,7 @@ function showImage(image_id) {
     $('.image-content').html('<span class="loading loading-ring loading-lg"></span>');
 
     $.ajax({
-        url: "{% url 'get-image-preview' %}",
+        url: previewImageUrl,
         type: "GET",
         data: { 'image_id': image_id },
         success: function(response) {
