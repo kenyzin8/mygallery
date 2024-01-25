@@ -22,8 +22,8 @@
     {% block styles %}
     {% endblock %}
 </head>
-<body>
-    <main class="m-5">
+<body class="flex flex-col min-h-screen">
+    <main class="m-5 flex-grow">
         <div class="mockup-browser bg-base-300">
             <div class="mockup-browser-toolbar">
                 <div class="input">{{ request.get_full_path }}</div>
@@ -34,9 +34,6 @@
             </div>
         </div>
     </main>
-
-    <br>
-
     <footer class="footer items-center p-4 bg-[#15191E] text-neutral-content">
         <aside class="items-center grid-flow-col">
             <img src="{% static 'images/fav.png' %}" alt="footer-logo" class="w-[36px] h-[36px]">
