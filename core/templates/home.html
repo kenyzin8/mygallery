@@ -34,6 +34,23 @@
     </div>    
 </div>
 
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="skeleton-wrap"> 
+    <div>
+        <div class="skeleton w-auto h-[615px] rounded-none"></div>
+    </div>
+    <div>
+        <div class="skeleton w-auto h-[299px] rounded-none mb-4"></div>
+        <div class="skeleton w-auto h-[299px] rounded-none"></div>
+    </div>
+    <div>
+        <div class="skeleton w-auto h-[615px] rounded-none"></div>
+    </div>
+    <div>
+        <div class="skeleton w-auto h-[299px] rounded-none mb-4"></div>
+        <div class="skeleton w-auto h-[299px] rounded-none"></div>
+    </div>
+</div>
+
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
     {% for column in columns %}
     <div>
@@ -46,24 +63,6 @@
     </div>
     {% endfor %}
 </div>
-
-<div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="skeleton-wrap"> 
-    <div>
-        <div class="skeleton w-auto h-[615px]"></div>
-    </div>
-    <div>
-        <div class="skeleton w-auto h-[299px] mb-4"></div>
-        <div class="skeleton w-auto h-[299px]"></div>
-    </div>
-    <div>
-        <div class="skeleton w-auto h-[615px]"></div>
-    </div>
-    <div>
-        <div class="skeleton w-auto h-[299px] mb-4"></div>
-        <div class="skeleton w-auto h-[299px]"></div>
-    </div>
-</div>
-
 {% if paginator.page_range|length > 1 %}
 <div class="w-full text-center">
     <span class="text-sm font-semibold text-[orange] italic">Load More</span>
