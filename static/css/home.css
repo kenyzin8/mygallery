@@ -1,0 +1,6 @@
+.modal-box::-webkit-scrollbar {
+    width: 2px;
+}
+.modal-box::-webkit-scrollbar-track {
+    background: #1d232a00; 
+}

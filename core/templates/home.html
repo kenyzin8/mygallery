@@ -1,22 +1,11 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}Home{% endblock %}
 
 {% block styles %}
-<style>
-.modal-box::-webkit-scrollbar {
-    width: 2px;
-}
-.modal-box::-webkit-scrollbar-track {
-    background: #1d232a00; 
-}
-</style>
-<script>
-    function imageLoaded(imgElement) {
-        imgElement.classList.remove('hidden');
-        imgElement.nextElementSibling.classList.add('hidden');
-    }
-</script>
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -44,19 +33,37 @@
         {% endfor %}
     </div>    
 </div>
+
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
     {% for column in columns %}
     <div>
         {% for img in column %}
-        <div class="cursor-pointer tooltip mb-3">
-            <img class="h-auto max-w-full hidden shadow-lg" src="{{ img.thumbnail.url }}" alt="{{ img.title }}" onload="imageLoaded(this)" id="img-{{ img.id }}">
-            <span class="loading loading-spinner text-warning"></span>
+        <div class="cursor-pointer mb-3 tooltip">
+            <img class="h-auto max-w-full shadow-lg hidden" src="{{ img.thumbnail.url }}" alt="{{ img.title }}" id="img-{{ img.id }}">
             <div data-image-id="{{ img.id }}" class="image-preview absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-[hsl(0,0%,99%,0.1)] bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-100"></div>
         </div>
         {% endfor %}
     </div>
     {% endfor %}
 </div>
+
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="skeleton-wrap"> 
+    <div>
+        <div class="skeleton w-auto h-[615px]"></div>
+    </div>
+    <div>
+        <div class="skeleton w-auto h-[299px] mb-4"></div>
+        <div class="skeleton w-auto h-[299px]"></div>
+    </div>
+    <div>
+        <div class="skeleton w-auto h-[615px]"></div>
+    </div>
+    <div>
+        <div class="skeleton w-auto h-[299px] mb-4"></div>
+        <div class="skeleton w-auto h-[299px]"></div>
+    </div>
+</div>
+
 {% if paginator.page_range|length > 1 %}
 <div class="w-full text-center">
     <span class="text-sm font-semibold text-[orange] italic">Load More</span>
@@ -150,100 +157,6 @@
 {% block scripts %}
 <script>
     var ids = {{ image_ids | safe }};
-    var currentImageID = -1;
-    var canClickButtons = true;
-
-    $(document).on('click', '.image-preview', function() {
-        var image_id = $(this).data('image-id');
-        currentImageID = image_id;
-        showImage(currentImageID);
-    });
-
-    function showImage(image_id) {
-        var previewModal = document.getElementById('image-preview-modal');
-
-        $('.image-content').html('<span class="loading loading-ring loading-lg"></span>');
-
-        $.ajax({
-            url: "{% url 'get-image-preview' %}",
-            type: "GET",
-            data: { 'image_id': image_id },
-            success: function(response) {
-                if(response.success) {
-                    $('.image-title').text(response.image_title);
-
-                    var img = $('<img src="' + response.image_url + '" class="h-screen object-contain mx-auto">');
-
-                    img.on('load', function() {
-                        setTimeout(function() {
-                            $('.image-content').html(img);
-                        }, 500);
-                    });
-
-                    previewModal.showModal();
-                } else {
-                    console.log('Error: ' + response.error);
-                }
-            },
-            error: function(error) {
-                console.log('AJAX error: ', error);
-            }
-        });
-    }
-    function getNextImageId() {
-        var currentIndex = ids.indexOf(parseInt(currentImageID));
-        if (currentIndex !== -1) {
-            var nextIndex = (currentIndex + 1) % ids.length;
-            return ids[nextIndex];
-        }
-        return null;
-    }
-
-    function getPrevImageId() {
-        var currentIndex = ids.indexOf(parseInt(currentImageID));
-        if (currentIndex !== -1) {
-            var prevIndex = (currentIndex - 1 + ids.length) % ids.length;
-            return ids[prevIndex];
-        }
-        return null;
-    }
-
-    function navigateImage(direction) {
-        if (canClickButtons) {
-            var imageId = direction === 'next' ? getNextImageId() : getPrevImageId();
-            if(imageId !== null) {
-                currentImageID = imageId;
-                showImage(imageId);
-                disableButtonsTemporarily();
-            }
-        }
-    }
-
-    $(document).on('click', '.next-button', function() {
-        navigateImage('next');
-    });
-
-    $(document).on('click', '.prev-button', function() {
-        navigateImage('prev');
-    });
-
-
-    $(document).keydown(function(e) {
-        if (e.keyCode === 39) {
-            navigateImage('next');
-        }
-        if (e.keyCode === 37) { // 
-            navigateImage('prev');
-        }
-    });
-
-    function disableButtonsTemporarily() {
-        canClickButtons = false; 
-        $('.next-button, .prev-button').prop('disabled', true); 
-        setTimeout(function() {
-            canClickButtons = true;
-            $('.next-button, .prev-button').prop('disabled', false);
-        }, 1000);
-    }
 </script>
+<script src="{% static 'js/home.js' %}"></script>
 {% endblock %}
