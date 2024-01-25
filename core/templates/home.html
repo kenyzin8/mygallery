@@ -6,6 +6,16 @@
 
 {% block styles %}
 <link rel="stylesheet" href="{% static 'css/home.css' %}">
+<style>
+    @font-face {
+        font-family: photograph;
+        src: url("{% static 'fonts/Photograph.ttf' %}");
+    }
+
+    #main-logo{
+        font-family: photograph !important;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -20,16 +30,16 @@
   </div>
 </dialog>
 <div class="py-4 md:py-8 mx-auto text-center">
-    <div class="font-semibold italic mb-4 text-2xl">
-        kent john photography
+    <div class="mb-4 text-6xl mt-5 text-[orange]" id="main-logo">
+        Kent John Photography
     </div>
     <div class="mb-3">
         <button onclick="who_is_me.showModal()"><i class="mx-auto" data-feather="help-circle"></i></button>
     </div>
-    <div>
-        <a href="?category=all" class="btn btn-sm text-sm m-1 {% if selected_category == 'all' %}btn-active{% else %}btn-neutral{% endif %}">All</a>
+    <div class="join">
+        <a href="?category=all" class="join-item btn btn-sm no-animation text-sm {% if selected_category == 'all' %}btn-active{% else %}btn-neutral{% endif %}">All</a>
         {% for category in categories %}
-            <a href="?category={{ category.name }}" class="btn btn-sm text-sm m-1 {% if selected_category == category.name %}btn-active{% else %}btn-neutral{% endif %}">{{ category.name }}</a>
+            <a href="?category={{ category.name }}" class="join-item btn btn-sm no-animation text-sm {% if selected_category == category.name %}btn-active{% else %}btn-neutral{% endif %}">{{ category.name }}</a>
         {% endfor %}
     </div>    
 </div>
