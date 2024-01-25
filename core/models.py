@@ -38,12 +38,16 @@ class Image(models.Model):
 
         with self.image.open() as image_file:
             pil_image = PilImage.open(image_file)
+            original_width, original_height = pil_image.size
 
-            self.image_width, self.image_height = pil_image.size
+            new_width = int(original_width * 0.50)
+            new_height = int(original_height * 0.50)
+
+            pil_image = pil_image.resize((new_width, new_height), PilImage.Resampling.LANCZOS)
 
             thumb_io = BytesIO()
-            pil_image.save(thumb_io, format='JPEG', quality=50)  
-            thumb_io.seek(0)  
+            pil_image.save(thumb_io, format='JPEG', quality=50)
+            thumb_io.seek(0)
 
             thumb_file = ContentFile(thumb_io.getvalue())
             thumb_filename = f'thumb-{self.image.name.split("/")[-1]}'
