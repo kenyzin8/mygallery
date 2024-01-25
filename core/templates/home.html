@@ -30,11 +30,11 @@
   </div>
 </dialog>
 <div class="py-4 md:py-8 mx-auto text-center">
-    <div class="mb-4 text-6xl mt-5 text-[orange]" id="main-logo">
+    <div class="mb-5 text-6xl mt-5 text-[orange]" id="main-logo">
         Kent John Photography
     </div>
-    <div class="mb-3">
-        <button onclick="who_is_me.showModal()"><i class="mx-auto" data-feather="help-circle"></i></button>
+    <div class="mb-4">
+        <button onclick="who_is_me.showModal()">❓</button>
     </div>
     <div class="join">
         <a href="?category=all" class="join-item btn btn-sm no-animation text-sm {% if selected_category == 'all' %}btn-active{% else %}btn-neutral{% endif %}">All</a>
@@ -44,6 +44,7 @@
     </div>    
 </div>
 
+{% if image_ids|length > 0 %}
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="skeleton-wrap"> 
     <div>
         <div class="skeleton w-auto h-[615px] rounded-none"></div>
@@ -73,6 +74,12 @@
     </div>
     {% endfor %}
 </div>
+{% endif %}
+{% if image_ids|length == 0 %}
+<div class="text-center">
+    <span class="font-semibold text-sm text-[orange] italic">It's empty in here...</span> 💨
+</div>
+{% endif %}
 {% if paginator.page_range|length > 1 %}
 <div class="w-full text-center">
     <span class="text-sm font-semibold text-[orange] italic">Load More</span>
