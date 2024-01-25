@@ -46,21 +46,21 @@
 
 {% if image_ids|length > 0 %}
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="skeleton-wrap"> 
-    {% for column in columns %}
     <div>
-        {% for img in column %}
-            <div class="mb-3">
-                {% if img.image_height > img.image_width %}
-                <div class="skeleton w-auto h-[673px] rounded-none"></div>
-                {% else %}
-                <div class="skeleton w-auto h-[299px] rounded-none"></div>
-                {% endif %}
-            </div>
-        {% endfor %}
+        <div class="skeleton w-auto h-[615px] rounded-none"></div>
     </div>
-    {% endfor %}
+    <div>
+        <div class="skeleton w-auto h-[299px] rounded-none mb-4"></div>
+        <div class="skeleton w-auto h-[299px] rounded-none"></div>
+    </div>
+    <div>
+        <div class="skeleton w-auto h-[615px] rounded-none"></div>
+    </div>
+    <div>
+        <div class="skeleton w-auto h-[299px] rounded-none mb-4"></div>
+        <div class="skeleton w-auto h-[299px] rounded-none"></div>
+    </div>
 </div>
-
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
     {% for column in columns %}
     <div>
@@ -170,10 +170,9 @@
 {% endblock %}
 
 {% block scripts %}
-
-<script src="{% static 'js/home.js' %}"></script>
 <script>
     var ids = {{ image_ids | safe }};
     var previewImageUrl = "{% url 'get-image-preview' %}";
 </script>
+<script src="{% static 'js/home.js' %}"></script>
 {% endblock %}
