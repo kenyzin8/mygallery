@@ -1,1 +1,1 @@
-web: gunicorn barraca.wsgi:application --log-file -
+web: gunicorn mygallery.wsgi:application --log-file -
