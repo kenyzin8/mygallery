@@ -11,41 +11,14 @@
 
     <link rel="stylesheet" href="{% static 'plugins/daisyui/css/daisy.min.css' %}">
     <script src="{% static 'plugins/daisyui/js/daisy.min.js' %}"></script>
+
     <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+
     <script src="{% static 'plugins/masonry/masonry.js' %}"></script>
 
-    <script>
-        function showError(message){
-            var errorModal = document.getElementById('error-modal')
-            errorModal.querySelector('.modal-body').textContent = message
-            errorModal.showModal()
-        }
-        function showSuccess(message){
-            var successModal = document.getElementById('success-modal')
-            successModal.querySelector('.modal-body').textContent = message
-            successModal.showModal()
-        }
-    </script>
-    <style>
-        ::-webkit-scrollbar {
-            width: 5px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #1D232A; 
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: #4e4e4e; 
-            border-radius: 1px;
-            padding: 10px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: #4e4e4e; 
-            border-radius: 5px;
-        }
-    </style>
+    <script src="{% static 'js/base.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+
     {% block styles %}
     {% endblock %}
 </head>
@@ -87,7 +60,7 @@
     </dialog>
     {% block scripts %}{% endblock %}
     <script>
-      feather.replace();
-    </script> 
+        feather.replace();
+    </script>
 </body>
 </html>
