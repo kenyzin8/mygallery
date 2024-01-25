@@ -11,6 +11,12 @@
     background: #1d232a00; 
 }
 </style>
+<script>
+    function imageLoaded(imgElement) {
+        imgElement.classList.remove('hidden');
+        imgElement.nextElementSibling.classList.add('hidden');
+    }
+</script>
 {% endblock %}
 
 {% block content %}
@@ -38,13 +44,89 @@
         {% endfor %}
     </div>    
 </div>
-<div class="masonry md:columns-4 columns-2 gap-4">
-    {% for img in images %}
-    <div class="mb-4 cursor-pointer">
-        <img class="h-auto max-w-full image-preview" src="{{ img.thumbnail.url }}" alt="{{ img.title }}" data-image-id="{{ img.id }}">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    {% for column in columns %}
+    <div>
+        {% for img in column %}
+        <div class="cursor-pointer tooltip mb-3">
+            <img class="h-auto max-w-full hidden shadow-lg" src="{{ img.thumbnail.url }}" alt="{{ img.title }}" onload="imageLoaded(this)">
+            <span class="loading loading-spinner text-warning"></span>
+            <div data-image-id="{{ img.id }}" class="image-preview absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-[hsl(0,0%,99%,0.1)] bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-100"></div>
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}    
+    {% endfor %}
 </div>
+{% if paginator.page_range|length > 1 %}
+<div class="w-full text-center">
+    <span class="text-sm font-semibold text-[orange] italic">Load More</span>
+</div>
+{% endif %}
+{% if paginator.page_range|length > 1 %}
+<div id="paginationControls" class="rounded-md fixed bottom-[30px] left-0 right-0 text-center" style="transform: translateX(-50%); left: 50%;">
+    <div class="join inline-block shadow-lg ">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="join-item btn btn-sm">«</a>
+        {% else %}
+            <button class="join-item btn btn-sm" disabled>«</button>
+        {% endif %}
+
+        <a href="?page=1" class="join-item btn btn-sm {% if page_obj.number == 1 %}btn-active{% endif %}">1</a>
+        
+        {% if page_obj.number > 4 %}
+            <button class="join-item btn btn-disabled btn-sm">...</button>
+        {% endif %}
+
+        {% if page_obj.number > 3 %}
+            <a href="?page={{ page_obj.number|add:'-2' }}" class="join-item btn btn-sm">{{ page_obj.number|add:'-2' }}</a>
+        {% endif %}
+        {% if page_obj.number > 2 %}
+            <a href="?page={{ page_obj.number|add:'-1' }}" class="join-item btn btn-sm">{{ page_obj.number|add:'-1' }}</a>
+        {% endif %}
+
+        {% if page_obj.number != 1 and page_obj.number != page_obj.paginator.num_pages %}
+            <button class="join-item btn btn-sm btn-active">{{ page_obj.number }}</button>
+        {% endif %}
+
+        {% if page_obj.number < page_obj.paginator.num_pages|add:'-1' %}
+            <a href="?page={{ page_obj.number|add:'1' }}" class="join-item btn btn-sm">{{ page_obj.number|add:'1' }}</a>
+        {% endif %}
+        {% if page_obj.number < page_obj.paginator.num_pages|add:'-2' %}
+            <a href="?page={{ page_obj.number|add:'2' }}" class="join-item btn btn-sm">{{ page_obj.number|add:'2' }}</a>
+        {% endif %}
+
+        {% if page_obj.number < page_obj.paginator.num_pages|add:'-3' %}
+            <button class="join-item btn btn-disabled btn-sm">...</button>
+        {% endif %}
+
+        <a href="?page={{ page_obj.paginator.num_pages }}" class="join-item btn btn-sm {% if page_obj.number == page_obj.paginator.num_pages %}btn-active{% endif %}">{{ page_obj.paginator.num_pages }}</a>
+        
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="join-item btn btn-sm">»</a>
+        {% else %}
+            <button class="join-item btn btn-sm" disabled>»</button>
+        {% endif %}
+    </div>
+</div>
+
+<button id="togglePagination" class="rounded-md fixed bottom-[5px] left-0 right-0 text-center" style="transform: translateX(-50%); left: 50%;">
+    <span id="arrowIcon">▼</span>
+</button>
+<script>
+    document.getElementById('togglePagination').addEventListener('click', function() {
+        var paginationControls = document.getElementById('paginationControls');
+        var arrowIcon = document.getElementById('arrowIcon');
+        if (paginationControls.style.display === 'none') {
+            paginationControls.style.display = 'block';
+            arrowIcon.textContent = '▼';
+        } else {
+            paginationControls.style.display = 'none';
+            arrowIcon.textContent = '▲';
+        }
+    });
+</script>
+{% endif %}
+
 <dialog id="image-preview-modal" class="modal fixed inset-0 bg-[#121212] z-50 flex justify-center items-center p-4">
     <form method="dialog">
         <button class="btn btn-sm btn-circle absolute right-2 top-2 text-white">✕</button>
@@ -163,6 +245,12 @@
             $('.next-button, .prev-button').prop('disabled', false);
         }, 1000);
     }
+
+    // $('.hakdog').masonry({
+    //     itemSelector: '.grid-item',
+    //     columnWidth: 160,
+    //     horizontalOrder: true
+    // });
 </script>
 
 

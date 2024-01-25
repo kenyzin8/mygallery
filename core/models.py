@@ -1,7 +1,7 @@
 from django.db import models
+from django.core.files.base import ContentFile
 from PIL import Image as PilImage
 from io import BytesIO
-from django.core.files.base import ContentFile
 
 class Category(models.Model):
     name = models.CharField(max_length=200, blank=True)
@@ -17,11 +17,11 @@ class Category(models.Model):
 
 class Image(models.Model):
     title = models.CharField(max_length=200, blank=True)
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(upload_to='public/images/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
     description = models.TextField(max_length=1000, blank=True)
 
-    thumbnail = models.ImageField(upload_to='images/thumbnail/', blank=True)
+    thumbnail = models.ImageField(upload_to='public/images/', blank=True)
 
     is_active = models.BooleanField(default=True)
 
@@ -36,17 +36,19 @@ class Image(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        pil_image = PilImage.open(self.image.path)
+        with self.image.open() as image_file:
+            pil_image = PilImage.open(image_file)
 
-        self.image_width, self.image_height = pil_image.size
+            self.image_width, self.image_height = pil_image.size
 
-        thumb_io = BytesIO()
+            thumb_io = BytesIO()
+            pil_image.save(thumb_io, format='JPEG', quality=50)  
+            thumb_io.seek(0)  
 
-        pil_image.save(thumb_io, format='JPEG', quality=50) 
+            thumb_file = ContentFile(thumb_io.getvalue())
+            thumb_filename = f'thumb-{self.image.name.split("/")[-1]}'
 
-        thumb_file = ContentFile(thumb_io.getvalue(), name=f'thumb-{self.image.name}.jpeg')
-
-        self.thumbnail.save(thumb_file.name, thumb_file, save=False)
+            self.thumbnail.save(thumb_filename, thumb_file, save=False)
 
         super().save(*args, **kwargs)
 

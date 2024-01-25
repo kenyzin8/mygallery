@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import *
 from django.http import JsonResponse
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 def home(request):
     categories = Category.objects.filter(is_active=True)
     selected_category = request.GET.get('category', 'all')
@@ -11,16 +11,32 @@ def home(request):
     else:
         images = Image.objects.filter(is_active=True, category__name=selected_category)
 
-    image_ids = [image.id for image in images]
+    page = request.GET.get('page', 1)
+    paginator = Paginator(images, 36)
+
+    try:
+        images_page = paginator.page(page)
+    except PageNotAnInteger:
+        images_page = paginator.page(1)
+    except EmptyPage:
+        images_page = paginator.page(paginator.num_pages)
+
+    columns = {i: [] for i in range(4)}
+    for index, image in enumerate(images_page):
+        columns[index % 4].append(image)
 
     help_icon_content = HelpIconContent.objects.first()
 
+    image_ids = [image.id for image in images_page]
+
     context = {
         'categories': categories,
-        'images': images,
+        'columns': columns.values(),
         'selected_category': selected_category,
-        'image_ids': image_ids,
         'help_icon_content': help_icon_content,
+        'paginator': paginator, 
+        'page_obj': images_page,  
+        'image_ids': image_ids,
     }
 
     return render(request, 'home.html', context)
