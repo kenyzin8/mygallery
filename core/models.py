@@ -38,6 +38,8 @@ class Image(models.Model):
 
         with self.image.open() as image_file:
             pil_image = PilImage.open(image_file)
+
+            self.image_width, self.image_height = pil_image.size
             original_width, original_height = pil_image.size
 
             new_width = int(original_width * 0.50)
