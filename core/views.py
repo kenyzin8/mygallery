@@ -2,14 +2,15 @@ from django.shortcuts import render
 from .models import *
 from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 def home(request):
     categories = Category.objects.filter(is_active=True)
     selected_category = request.GET.get('category', 'all')
 
     if selected_category == 'all':
-        images = Image.objects.filter(is_active=True)
+        images = Image.objects.filter(is_active=True).order_by('-id')
     else:
-        images = Image.objects.filter(is_active=True, category__name=selected_category)
+        images = Image.objects.filter(is_active=True, category__name=selected_category).order_by('-id')
 
     page = request.GET.get('page', 1)
     paginator = Paginator(images, 36)
@@ -40,6 +41,7 @@ def home(request):
     }
 
     return render(request, 'home.html', context)
+
 
 def get_image_preview(request):
     try:
