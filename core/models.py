@@ -69,3 +69,12 @@ class HelpIconContent(models.Model):
 
     class Meta:
         verbose_name_plural = 'Help Icon Content'
+
+class GridColumns(models.Model):
+    number_of_columns = models.IntegerField()
+
+    def __str__(self):
+        return str(self.number_of_columns)
+
+    class Meta:
+        verbose_name_plural = 'Grid Columns'

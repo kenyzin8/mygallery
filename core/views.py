@@ -22,9 +22,11 @@ def home(request):
     except EmptyPage:
         images_page = paginator.page(paginator.num_pages)
 
-    columns = {i: [] for i in range(4)}
+    grid_columns = GridColumns.objects.first().number_of_columns
+
+    columns = {i: [] for i in range(grid_columns)}
     for index, image in enumerate(images_page):
-        columns[index % 4].append(image)
+        columns[index % grid_columns].append(image)
 
     help_icon_content = HelpIconContent.objects.first()
 
@@ -38,6 +40,7 @@ def home(request):
         'paginator': paginator, 
         'page_obj': images_page,  
         'image_ids': image_ids,
+        'grid_columns': grid_columns,
     }
 
     return render(request, 'home.html', context)

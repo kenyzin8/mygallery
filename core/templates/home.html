@@ -61,7 +61,7 @@
         <div class="skeleton w-auto h-[299px] rounded-none"></div>
     </div>
 </div>
-<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="grid grid-cols-2 md:grid-cols-{{ grid_columns }} gap-4">
     {% for column in columns %}
     <div>
         {% for img in column %}

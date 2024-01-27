@@ -18,6 +18,11 @@ class HelpIconContentAdmin(admin.ModelAdmin):
     list_display = ['content']
     search_fields = ['content']
 
+class GridColumnsAdmin(admin.ModelAdmin):
+    list_display = ['number_of_columns']
+    search_fields = ['number_of_columns']
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Image, ImageAdmin)
 admin.site.register(HelpIconContent, HelpIconContentAdmin)
+admin.site.register(GridColumns, GridColumnsAdmin)
