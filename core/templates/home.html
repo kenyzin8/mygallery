@@ -151,17 +151,17 @@
 
 <dialog id="image-preview-modal" class="modal fixed inset-0 bg-[#121212] z-50 flex justify-center items-center p-4">
     <form method="dialog">
-        <button class="btn btn-sm btn-circle absolute right-2 top-2 text-white">✕</button>
+        <button class="btn btn-sm btn-circle absolute right-2 top-2 text-white z-50">✕</button>
     </form>
     <button class="bg-[#121212] rounded-md prev-button absolute left-10 lg:top-1/2 md:top-1/2 top-[82%] transform -translate-y-1/2 font-bold text-lg text-white p-2"><i data-feather="arrow-left"></i></button>
     <button class="bg-[#121212] rounded-md next-button absolute right-10 lg:top-1/2 md:top-1/2 top-[82%] transform -translate-y-1/2 font-bold text-lg text-white p-2"><i data-feather="arrow-right"></i></button>
 
     <div class="absolute bottom-2 left-2">
-        <h3 class="text-sm font-medium italic image-title"></h3>
+        <h3 class="text-sm font-medium italic image-title z-50"></h3>
     </div>
     
-    <div class="flex justify-center items-center w-full p-5 overflow-auto">
-        <div class="image-content flex justify-center items-center w-full">
+    <div class="image-content-wrapper flex justify-center items-center w-full p-5 overflow-auto" id="image-content-wrapper">
+        <div class="image-content flex justify-center items-center w-full" id="image-content">
             <!-- Image will be dynamically inserted here -->
         </div>
     </div>

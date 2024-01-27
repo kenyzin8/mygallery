@@ -1,6 +1,24 @@
-.modal-box::-webkit-scrollbar {
-    width: 2px;
+.image-content-wrapper::-webkit-scrollbar {
+    display: none;
 }
-.modal-box::-webkit-scrollbar-track {
-    background: #1d232a00; 
+
+.image-content-wrapper {
+    -ms-overflow-style: none; 
+    scrollbar-width: none;  
+}
+
+figure.zoom {
+    background-position: 50% 50%;
+    position: relative;
+    margin: 150px auto;
+    overflow: hidden;
+    cursor: zoom-in;
+}
+figure.zoom img:hover {
+    opacity: 0;
+}
+figure.zoom img {
+    transition: opacity 0.5s;
+    display: block;
+    width: 100%;
 }
