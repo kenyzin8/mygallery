@@ -1,7 +1,8 @@
 var currentImageID = -1,
     canClickButtons = !0,
     currentClicks = -1,
-    zoomAmount = 150;
+    zoomAmount = 100;
+
 
 function isMobileDevice() {
     return /Mobi|Android/i.test(navigator.userAgent);
@@ -61,31 +62,34 @@ function showImage(e) {
                 $(".image-title").text(e.image_title);
 
                 var imgTag = $('<img src="' + e.image_url + '" class="h-screen object-contain mx-auto" />');
-
-                var imgHeight = imgTag.clientHeight;
-                var imgWidth = imgTag.clientWidth;
-            
-                var zoomContainer = $(`<figure class="zoom" onmousemove="zoom(event)" style="height: ${imgHeight}px; width: ${imgWidth}px;"></figure>`);
+                var zoomContainer = $(`<figure class="zoom" onmousemove="zoom(event)" style="height: auto; width: auto;"></figure>`);
                 zoomContainer.css('background-image', 'url(' + e.image_url + ')');
-                
+
                 if (!isMobileDevice()) {
                     imgTag.attr('onclick', 'increaseZoom()');
                     zoomContainer.attr('onclick', 'zoom(event)');
                 }
-                zoomContainer.append(imgTag);
 
-                setTimeout(function() {
-                    if(!isMobileDevice()){
-                        $(".image-content").html(zoomContainer)
-                        zoomAmount = 150;
-                        currentClicks = -1;
+                var imgTagLoaded = new Promise((resolve) => {
+                    imgTag.on('load', resolve);
+                });
+
+                var bgImageLoaded = new Promise((resolve) => {
+                    $("<img/>").attr("src", e.image_url).on('load', resolve);
+                });
+
+                Promise.all([imgTagLoaded, bgImageLoaded]).then(function() {
+                    zoomContainer.append(imgTag);
+                    if (!isMobileDevice()) {
+                        $(".image-content").html(zoomContainer);
                     }
                     else{
-                        $(".image-content").html(imgTag)
+                        $(".image-content").html(imgTag);
                     }
+                    
+                    currentClicks = -1;
+                });
 
-                }, 500);
-                
                 n.showModal();
             } else console.log("Error: " + e.error);
         },
@@ -94,6 +98,7 @@ function showImage(e) {
         }
     });
 }
+
 
 function getNextImageId() {
     var e = ids.indexOf(parseInt(currentImageID));
