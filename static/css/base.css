@@ -16,3 +16,13 @@
     background: #4e4e4e; 
     border-radius: 5px;
 }
+
+::-moz-selection { 
+  color: #121212;
+  background: #FFA500;
+}
+
+::selection {
+  color: #121212;
+  background: #FFA500;
+}
