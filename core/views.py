@@ -2,7 +2,6 @@ from django.shortcuts import render
 from .models import *
 from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from itertools import islice
 
 def home(request):
     categories = Category.objects.filter(is_active=True)
@@ -26,21 +25,13 @@ def home(request):
     grid_columns = GridColumns.objects.first().number_of_columns
 
     is_mobile = request.device['is_mobile']
-    
+
     if is_mobile:
         grid_columns = 2
 
-    latest_images = list(islice(images_page, grid_columns))
-    columns = {i: [latest_images[i]] if i < len(latest_images) else [] for i in range(grid_columns)}
-
-    target_height = sum(img.image_height or 0 for img in columns[0])
-
-    remaining_images = sorted(images_page[grid_columns:], key=lambda x: x.image_height or 0, reverse=True)
-
-    for image in remaining_images:
-        suitable_column = min(columns, key=lambda x: (target_height - sum(img.image_height or 0 for img in columns[x])) if target_height >= sum(img.image_height or 0 for img in columns[x]) else float('inf'))
-        
-        columns[suitable_column].append(image)
+    columns = {i: [] for i in range(grid_columns)}
+    for index, image in enumerate(images_page):
+        columns[index % grid_columns].append(image)
 
     help_icon_content = HelpIconContent.objects.first()
 
