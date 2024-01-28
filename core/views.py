@@ -24,6 +24,13 @@ def home(request):
 
     grid_columns = GridColumns.objects.first().number_of_columns
 
+    is_mobile = request.device['is_mobile']
+
+    if is_mobile:
+        grid_columns = 2
+
+    print(grid_columns)
+
     columns = {i: [] for i in range(grid_columns)}
     for index, image in enumerate(images_page):
         columns[index % grid_columns].append(image)
@@ -41,6 +48,7 @@ def home(request):
         'page_obj': images_page,  
         'image_ids': image_ids,
         'grid_columns': grid_columns,
+        'is_mobile': is_mobile,
     }
 
     return render(request, 'home.html', context)
