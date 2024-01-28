@@ -29,8 +29,6 @@ def home(request):
     if is_mobile:
         grid_columns = 2
 
-    print(grid_columns)
-
     columns = {i: [] for i in range(grid_columns)}
     for index, image in enumerate(images_page):
         columns[index % grid_columns].append(image)

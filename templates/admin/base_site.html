@@ -1,0 +1,32 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% block extrahead %}
+<style>
+    :root {
+        --header-bg: #FEA400;
+        --header-link-color: #121212;
+        --accent: #121212;
+        --header-color: #121212;
+    }
+
+    a.section:link, a.section:visited {
+        font-weight: 700;
+    }
+
+    #site-name a:link, #site-name a:visited {
+        font-weight: 600;
+    }
+
+    #user-tools, #logout-form button {
+        font-weight: 700 !important;
+    }
+
+    .login .form-row #id_username, .login .form-row #id_password {
+        background: #121212;
+        border: 1px solid rgba(255, 255, 255, 0.164);
+        border-radius: 5px;
+        color: white;
+    }
+</style>
+    <link rel="shortcut icon" href="{% static 'images/fav.png' %}" />
+{% endblock %}
