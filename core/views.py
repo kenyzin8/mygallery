@@ -51,16 +51,37 @@ def home(request):
 
     return render(request, 'home.html', context)
 
+def get_user_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+def has_viewed(image_id, session_id, ip_address):
+    return ImageView.objects.filter(image_id=image_id, session_id=session_id, ip_address=ip_address).exists()
+
+def record_view(image_id, session_id, ip_address):
+    new_view = ImageView(image_id=image_id, session_id=session_id, ip_address=ip_address)
+    new_view.save()
 
 def get_image_preview(request):
     try:
         image_id = request.GET.get('image_id', None)
+        user_session_id = request.session.session_key
+        user_ip_address = get_user_ip(request) 
+
         image = Image.objects.get(id=image_id)
+
+        if not has_viewed(image_id, user_session_id, user_ip_address):
+            record_view(image_id, user_session_id, user_ip_address)
 
         return JsonResponse({
             'success': True,
             'image_url': image.image.url,
             'image_title': f'{image.title} · {image.image_width}x{image.image_height} · {image.description}' if image.description else f'{image.title} · {image.image_width}x{image.image_height}',
+            'total_views': f'{ImageView.objects.filter(image_id=image_id).count()} views' if ImageView.objects.filter(image_id=image_id).count() > 1 else f'{ImageView.objects.filter(image_id=image_id).count()} view',
         })
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)})

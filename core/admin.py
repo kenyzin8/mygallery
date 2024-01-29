@@ -15,6 +15,9 @@ class ImageAdmin(admin.ModelAdmin):
     search_fields = ['title', 'description']
     exclude = ('thumbnail', 'image_height', 'image_width')
 
+class ImageViewAdmin(admin.ModelAdmin):
+    list_display = ['id', 'image', 'session_id', 'ip_address', 'view_date']
+
 class HelpIconContentAdmin(admin.ModelAdmin):
     list_display = ['content']
     search_fields = ['content']
@@ -43,6 +46,7 @@ admin.site.register(Category, CategoryAdmin)
 admin.site.register(Image, ImageAdmin)
 admin.site.register(HelpIconContent, HelpIconContentAdmin)
 admin.site.register(GridColumns, GridColumnsAdmin)
+admin.site.register(ImageView, ImageViewAdmin)
 
 admin.site.site_header = "Zin Photos Admin"
 admin.site.site_title = "Zin Photos Admin Portal"

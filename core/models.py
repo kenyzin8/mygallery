@@ -61,6 +61,12 @@ class Image(models.Model):
     class Meta:
         verbose_name_plural = 'Images'
 
+class ImageView(models.Model):
+    image = models.ForeignKey(Image, on_delete=models.CASCADE)  # Assuming Image is another model you have
+    session_id = models.CharField(max_length=128)
+    ip_address = models.CharField(max_length=40)  # Length can vary based on IP version (IPv4 vs IPv6)
+    view_date = models.DateTimeField(auto_now_add=True)
+
 class HelpIconContent(models.Model):
     content = models.TextField(max_length=1500, blank=True)
 
