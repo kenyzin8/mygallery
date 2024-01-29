@@ -9,11 +9,11 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ['name', 'description']
 
 class ImageAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'image', 'thumbnail', 'uploaded_at', 'description', 'is_active', 'category']
-    list_editable = ['is_active', 'image', 'category']
+    list_display = ['id', 'title', 'image', 'video', 'thumbnail', 'uploaded_at', 'description', 'is_active', 'category']
+    list_editable = ['is_active', 'category']
     list_filter = ['is_active', 'category']
     search_fields = ['title', 'description']
-    exclude = ('thumbnail', 'image_height', 'image_width')
+    exclude = ('thumbnail', 'image_height', 'image_width', 'is_active')
 
 class ImageViewAdmin(admin.ModelAdmin):
     list_display = ['id', 'image', 'session_id', 'ip_address', 'view_date']

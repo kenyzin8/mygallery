@@ -2,6 +2,10 @@
 {% load static %}
 {% block extrahead %}
 <style>
+    html{
+        font-size: medium !important;
+    }
+
     :root {
         --header-bg: #FEA400;
         --header-link-color: #121212;
@@ -26,6 +30,11 @@
         border: 1px solid rgba(255, 255, 255, 0.164);
         border-radius: 5px;
         color: white;
+    }
+
+    .help{
+        color:#FEA400 !important;
+        font-weight: 700 !important;
     }
 </style>
     <link rel="shortcut icon" href="{% static 'images/fav.png' %}" />

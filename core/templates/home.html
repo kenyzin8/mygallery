@@ -15,6 +15,10 @@
     #main-logo{
         font-family: photograph !important;
     }
+
+    img {
+        pointer-events: none;
+    }
 </style>
 {% endblock %}
 
@@ -62,12 +66,21 @@
     </div>
 </div>
 <div class="grid grid-cols-2 md:grid-cols-{{ grid_columns }} gap-4">
+
     {% for column in columns %}
     <div>
+        
         {% for img in column %}
-        <div class="cursor-pointer mb-3 tooltip">
+        <div class="cursor-pointer mb-3 tooltip" {% if img.video %}data-tip="{{ img.title }}"{% endif %}>
+            {% if img.image %}
             <img class="h-auto max-w-full shadow-lg hidden" src="{{ img.thumbnail.url }}" alt="{{ img.title }}" id="img-{{ img.id }}">
             <div data-image-id="{{ img.id }}" class="image-preview absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-[hsl(0,0%,99%,0.1)] bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-100"></div>
+            {% else %}
+            <video class="h-auto max-w-full shadow-lg hidden" onloadstart="this.volume=0.1" controlsList="nodownload" poster="{{ img.video_thumbnail }}" controls>
+                <source src="{{ img.video }}" type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
+            {% endif %}  
         </div>
         {% endfor %}
     </div>
