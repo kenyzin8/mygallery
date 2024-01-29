@@ -18,7 +18,7 @@ class Category(models.Model):
 class Image(models.Model):
     title = models.CharField(max_length=200, blank=True, help_text="Type N/A if you don't want to add a title.")
     image = models.ImageField(upload_to='public/images/', blank=True, null=True, help_text="Leave blank if you want to upload a video.")
-    video = models.FileField(upload_to='public/videos/', blank=True, null=True, help_text="Leave blank if you want to upload an image.")
+    video = models.FileField(upload_to='public/images/', blank=True, null=True, help_text="Leave blank if you want to upload an image.")
     video_thumbnail = models.ImageField(upload_to='public/images/', blank=True, null=True, help_text="The size of the thumbnail should be similar to the video size.")
     uploaded_at = models.DateTimeField(auto_now_add=True)
     description = models.TextField(max_length=1000, blank=True, help_text="Optional description for the image only.")
