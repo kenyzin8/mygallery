@@ -4,25 +4,16 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def home(request):
-    # Your existing setup code
     categories = Category.objects.filter(is_active=True)
     selected_category = request.GET.get('category', 'all')
 
     if selected_category == 'all':
-        images = list(Image.objects.filter(is_active=True).order_by('-id'))
+        images = Image.objects.filter(is_active=True).order_by('-id')
     else:
-        images = list(Image.objects.filter(is_active=True, category__name=selected_category).order_by('-id'))
+        images = Image.objects.filter(is_active=True, category__name=selected_category).order_by('-id')
 
-    # Insert ad placeholder into images list
-    ad_placeholder = {'is_ad': True}
-    images_with_ads = []
-    for i in range(0, len(images), 6):
-        images_with_ads.extend(images[i:i+6])
-        images_with_ads.append(ad_placeholder)
-
-    # Existing pagination and column distribution logic
     page = request.GET.get('page', 1)
-    paginator = Paginator(images_with_ads, 36)  # Adjust per page to account for ads if necessary
+    paginator = Paginator(images, 36)
 
     try:
         images_page = paginator.page(page)
@@ -32,79 +23,33 @@ def home(request):
         images_page = paginator.page(paginator.num_pages)
 
     grid_columns = GridColumns.objects.first().number_of_columns
+
     is_mobile = request.device['is_mobile']
+
     if is_mobile:
         grid_columns = 2
 
     columns = {i: [] for i in range(grid_columns)}
-    for index, item in enumerate(images_page):
-        columns[index % grid_columns].append(item)
+    for index, image in enumerate(images_page):
+        columns[index % grid_columns].append(image)
 
     help_icon_content = HelpIconContent.objects.first()
-    image_ids = [image.id for image in images_page if not hasattr(image, 'is_ad')]
+
+    image_ids = [image.id for image in images_page]
 
     context = {
         'categories': categories,
         'columns': columns.values(),
         'selected_category': selected_category,
         'help_icon_content': help_icon_content,
-        'paginator': paginator,
-        'page_obj': images_page,
+        'paginator': paginator, 
+        'page_obj': images_page,  
         'image_ids': image_ids,
         'grid_columns': grid_columns,
         'is_mobile': is_mobile,
     }
 
     return render(request, 'home.html', context)
-
-
-# def home(request):
-#     categories = Category.objects.filter(is_active=True)
-#     selected_category = request.GET.get('category', 'all')
-
-#     if selected_category == 'all':
-#         images = Image.objects.filter(is_active=True).order_by('-id')
-#     else:
-#         images = Image.objects.filter(is_active=True, category__name=selected_category).order_by('-id')
-
-#     page = request.GET.get('page', 1)
-#     paginator = Paginator(images, 36)
-
-#     try:
-#         images_page = paginator.page(page)
-#     except PageNotAnInteger:
-#         images_page = paginator.page(1)
-#     except EmptyPage:
-#         images_page = paginator.page(paginator.num_pages)
-
-#     grid_columns = GridColumns.objects.first().number_of_columns
-
-#     is_mobile = request.device['is_mobile']
-
-#     if is_mobile:
-#         grid_columns = 2
-
-#     columns = {i: [] for i in range(grid_columns)}
-#     for index, image in enumerate(images_page):
-#         columns[index % grid_columns].append(image)
-
-#     help_icon_content = HelpIconContent.objects.first()
-
-#     image_ids = [image.id for image in images_page]
-
-#     context = {
-#         'categories': categories,
-#         'columns': columns.values(),
-#         'selected_category': selected_category,
-#         'help_icon_content': help_icon_content,
-#         'paginator': paginator, 
-#         'page_obj': images_page,  
-#         'image_ids': image_ids,
-#         'grid_columns': grid_columns,
-#         'is_mobile': is_mobile,
-#     }
-
-#     return render(request, 'home.html', context)
 
 def get_user_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
