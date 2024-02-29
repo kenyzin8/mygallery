@@ -66,6 +66,16 @@
 <div class="grid grid-cols-2 md:grid-cols-{{ grid_columns }} gap-4">
     {% for column in columns %}
     <div>
+         {% if forloop.first %}
+          <div class="cursor-pointer mb-3 tooltip" {% if img.video %}data-tip="{{ img.title }}"{% endif %}>
+               <ins class="adsbygoogle h-auto max-w-full shadow-lg"
+                    style="display:block"
+                    data-ad-client="ca-pub-2932799223671964"
+                    data-ad-slot="9226818360"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins> 
+         </div>
+         {% endif %}
         {% for img in column %}
         <div class="cursor-pointer mb-3 tooltip" {% if img.video %}data-tip="{{ img.title }}"{% endif %}>
             {% if img.image %}
@@ -79,16 +89,6 @@
             {% endif %}
         </div>
         {% endfor %}
-         {% if forloop.counter == 1 %}
-          <div class="mb-3 tooltip" {% if img.video %}data-tip="{{ img.title }}"{% endif %}>
-               <ins class="adsbygoogle h-auto max-w-full shadow-lg"
-                    style="display:block"
-                    data-ad-client="ca-pub-2932799223671964"
-                    data-ad-slot="9226818360"
-                    data-ad-format="auto"
-                    data-full-width-responsive="true"></ins> 
-         </div>
-         {% endif %}
     </div>
     {% endfor %}
 </div>
