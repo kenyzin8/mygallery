@@ -8,6 +8,7 @@ urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', home, name='home'),
     path('get-image-preview/', get_image_preview, name='get-image-preview'),
+    path('ipon/privacy-policy/', privacy_policy, name='privacy-policy'),
 ]
 
 if settings.DEBUG:
