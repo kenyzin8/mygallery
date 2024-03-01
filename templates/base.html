@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-adsense-account" content="ca-pub-2932799223671964">
+    
     <title>{% block title %}{% endblock %}</title>
-
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2932799223671964"
+         crossorigin="anonymous"></script>
+    
     <link rel="icon" type="image/x-icon" href="{% static 'images/fav.png' %}"/>
 
     <script src="{% static 'plugins/feather/js/feather.min.js' %}"></script>
@@ -20,7 +25,7 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
 
     <script src="{% static 'plugins/image-zoom/js-image-zoom.js' %}"></script>
-
+        
     {% block styles %}
     {% endblock %}
 </head>
@@ -79,6 +84,7 @@
     {% block scripts %}{% endblock %}
     <script>
         feather.replace();
+        (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
 </body>
 </html>
