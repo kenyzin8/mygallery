@@ -6,6 +6,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 def privacy_policy(request):
     return render(request, 'privacy_policy.html')
 
+def s3_privacy_policy(request):
+    return render(request, 's3_privacy_policy.html')
+
 def home(request):
     categories = Category.objects.filter(is_active=True)
     selected_category = request.GET.get('category', 'all')

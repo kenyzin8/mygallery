@@ -9,6 +9,7 @@ urlpatterns = [
     path('', home, name='home'),
     path('get-image-preview/', get_image_preview, name='get-image-preview'),
     path('ipon/privacy-policy/', privacy_policy, name='privacy-policy'),
+    path('image-viewer-for-s3/privacy-policy/', s3_privacy_policy, name='s3-privacy-policy'),
 ]
 
 if settings.DEBUG:
